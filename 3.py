@@ -2,21 +2,62 @@
 
 def main():
 	matr = []
-	neigh = {}
-	weights = {}
+	d = []
+	parent = {}
+	unvisited = []
 	with open("in.txt") as f:
 		n = int(f.readline())
-		for _ in range(n):
-			matr.append([int(e) for e in f.readline().split()])
-		start = int(f.readline())
-		end = int(f.readline())
-	for i in range(1, n+1):
-		neigh[i] = []
-		for j in range(1, n+1):
-			if matr[i-1][j-1] != -32768:
-				neigh[i].append(j)
-				weights[(i, j)] = matr[i-1][j-1]
-	print(weights)
+		for i in range(n):
+			unvisited.append(i)
+			d.append(0)
+			l = []
+			for e in f.readline().split():
+				num = int(e)
+				if num < 0:
+					num = 1000000
+				l.append(num)
+			matr.append(l)
+		start = int(f.readline())-1
+		end = int(f.readline())-1
+		d[start] = 0
+		parent[start] = None
+	unvisited.remove(start)
+	for v in unvisited:
+		d[v] = matr[start][v]
+		parent[v] = start
+	for _ in range(n-1):
+		k = 1000000
+		w = 0
+		for vert in unvisited:
+			if d[vert] >= 0 and d[vert] < k:
+				k = d[vert]
+				w = vert
+		try:
+			unvisited.remove(w)
+		except:
+			pass
+		for v in unvisited:
+			if d[w]+matr[w][v]<d[v]:
+				d[v] = d[w]+matr[w][v]
+				parent[v] = w
+	with open("out.txt", "w") as f:
+		if d[end] == 1000000:
+			f.write("N\n")
+		else:
+			path = []
+			weights = []
+			curr = end
+			while parent[curr] != None:
+				path.append(curr+1)
+				weights.append(matr[parent[curr]][curr])
+				curr = parent[curr]
+			path.append(start+1)
+			path.reverse()
+			str_path = [str(e) for e in path]
+			weights.sort()
+			f.write("Y\n")
+			f.write(" ".join(str_path)+"\n")
+			f.write(str(weights[-1])+"\n")
 
 if __name__ == "__main__":
 	main()
