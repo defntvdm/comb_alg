@@ -10,12 +10,10 @@ def main():
 		for i in range(n):
 			unvisited.append(i)
 			d.append(0)
-			l = []
-			for e in f.readline().split():
-				num = int(e)
-				if num < 0:
-					num = 1000000
-				l.append(num)
+			arr = [int(e) for e in f.readline().split()[:-1]]
+                        l = [1000000 for _ in range(n)]
+                        for j in range(0, len(arr), 2):
+                            l[arr[j]] = arr[j+1]
 			matr.append(l)
 		start = int(f.readline())-1
 		end = int(f.readline())-1
@@ -57,7 +55,7 @@ def main():
 			weights.sort()
 			f.write("Y\n")
 			f.write(" ".join(str_path)+"\n")
-			f.write(str(weights[-1])+"\n")
+			f.write(str(d[end]))
 
 if __name__ == "__main__":
 	main()
