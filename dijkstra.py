@@ -13,7 +13,7 @@ def main():
 			arr = [int(e) for e in f.readline().split()[:-1]]
                         l = [1000000 for _ in range(n)]
                         for j in range(0, len(arr), 2):
-                            l[arr[j]] = arr[j+1]
+                            l[arr[j]-1] = arr[j+1]
 			matr.append(l)
 		start = int(f.readline())-1
 		end = int(f.readline())-1
